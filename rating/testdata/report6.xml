@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  SYNTHETIC fixture. The other five reports are real УБКІ tapes; this one is
+  hand-built because three branches of the rules have no live example:
+
+    * a residue below the 10 ₴ threshold (deal 1, 7.40 ₴) and a residue exactly
+      on it (deal 2, 10.00 ₴) — neither may reach indicators 2, 3 or 4;
+    * a credit card reported closed while its latest snapshot still holds a
+      15 000 ₴ limit (deal 3) — report5 only covers the card whose limit had
+      already lapsed, i.e. the case where the rule must NOT fire;
+    * two live МФО loans at once (deals 4 and 5), which lights mfo_pressure
+      through its second branch — every real fixture is all-BNK.
+
+  Plus one monitoring subscription that has not expired yet, so Active=true is
+  exercised somewhere: on all five real reports it is false everywhere.
+
+  Indented for readability, unlike the real tapes: this file is maintained by
+  hand and has to be checkable by eye.
+-->
+<ubkidata>
+  <tech>
+    <trace>
+      <step name="build report" stm="2026-07-08 09:12:04.117" ftm="2026-07-08 09:12:04.598"/>
+    </trace>
+    <reqinfo reqid="req2#000004999001"/>
+  </tech>
+
+  <comp id="1" descr="Ідентифікація Суб'єкта кредитної історії (СКІ)">
+    <cki bdate="1988-11-02" inn="2101010101" lname="ЛИСЕНКО" fname="ОКСАНА" mname="ІГОРІВНА">
+      <ident inn="2101010101" csexref="жінка" csex="2" cgragref="Україна" cgrag="804" vdate="2026-02-11" donor="BNK"/>
+    </cki>
+  </comp>
+
+  <comp id="2" descr="Фінансові зобов`язання СКІ">
+    <donorsData totalCount="3" activeCount="3">
+      <donorTypeDealCount type="BNK" typeref="Банк" count="3"/>
+      <donorTypeDealCount type="MFO" typeref="МФО" count="2"/>
+    </donorsData>
+
+    <!-- 1. Consumer loan carrying a 7.40 ₴ rounding tail. Below the threshold:
+         not overdue, not in the sum, does not break the clean streak. -->
+    <crdeal dlrolesubref="Позичальник" dlrolesub="1" dldonornum="BNK7" dldonor="BNK" dlamt="24000.00"
+            dlcurrref="Українська гривня" dlcurr="980" dlporpogref="Кредит з щомісячними платежами" dlporpog="6"
+            dlvidobesref="Без забезпечення (бланкові)" dlvidobes="90"
+            dlcelcredref="Кредитний договір на інші споживчі цілі" dlcelcred="7" inn="2101010101" dlref="60000000000000000101">
+      <deallife dldateclc="2026-05-01" dldayexp="0" dlamtexp="0.00" dlamtcur="3600.00" dlamtpaym="800.00" dlamtlim="0.00" dlflstatref="відкритий" dlflstat="1" dldpf="2027-03-15" dlds="2024-03-15" dlyear="2026" dlmonth="5" dlref="60000000000000000101"/>
+      <deallife dldateclc="2026-06-01" dldayexp="0" dlamtexp="0.00" dlamtcur="2400.00" dlamtpaym="800.00" dlamtlim="0.00" dlflstatref="відкритий" dlflstat="1" dldpf="2027-03-15" dlds="2024-03-15" dlyear="2026" dlmonth="6" dlref="60000000000000000101"/>
+      <deallife dldateclc="2026-07-01" dldayexp="12" dlamtexp="7.40" dlamtcur="1200.00" dlamtpaym="800.00" dlamtlim="0.00" dlflstatref="відкритий" dlflstat="1" dldpf="2027-03-15" dlds="2024-03-15" dlyear="2026" dlmonth="7" dlref="60000000000000000101"/>
+    </crdeal>
+
+    <!-- 2. Consumer loan sitting exactly on the threshold. 10.00 ₴ is NOT
+         overdue: the comparison is strictly greater than. -->
+    <crdeal dlrolesubref="Позичальник" dlrolesub="1" dldonornum="BNK7" dldonor="BNK" dlamt="9000.00"
+            dlcurrref="Українська гривня" dlcurr="980" dlporpogref="Кредит з щомісячними платежами" dlporpog="6"
+            dlvidobesref="Без забезпечення (бланкові)" dlvidobes="90"
+            dlcelcredref="Споживчий кредит (товари в кредит)" dlcelcred="42" inn="2101010101" dlref="60000000000000000102">
+      <deallife dldateclc="2026-06-01" dldayexp="0" dlamtexp="0.00" dlamtcur="1350.00" dlamtpaym="450.00" dlamtlim="0.00" dlflstatref="відкритий" dlflstat="1" dldpf="2027-01-20" dlds="2025-01-20" dlyear="2026" dlmonth="6" dlref="60000000000000000102"/>
+      <deallife dldateclc="2026-07-01" dldayexp="5" dlamtexp="10.00" dlamtcur="900.00" dlamtpaym="450.00" dlamtlim="0.00" dlflstatref="відкритий" dlflstat="1" dldpf="2027-01-20" dlds="2025-01-20" dlyear="2026" dlmonth="7" dlref="60000000000000000102"/>
+    </crdeal>
+
+    <!-- 3. Credit card the bank reports as closed while the latest snapshot
+         still carries a 15 000 ₴ limit. Live obligation, not a repaid loan. -->
+    <crdeal dlrolesubref="Позичальник" dlrolesub="1" dldonornum="BNK2" dldonor="BNK" dlamt="15000.00"
+            dlcurrref="Українська гривня" dlcurr="980" dlporpogref="Овердрафт" dlporpog="4"
+            dlvidobesref="Без забезпечення (бланкові)" dlvidobes="90"
+            dlcelcredref="Кредитна картка" dlcelcred="31" inn="2101010101" dlref="60000000000000000103">
+      <deallife dldateclc="2026-05-02" dldayexp="0" dlamtexp="0.00" dlamtcur="0.00" dlamtpaym="0.00" dlamtlim="15000.00" dlflstatref="відкритий" dlflstat="1" dldpf="2070-05-10" dlds="2023-05-10" dlyear="2026" dlmonth="5" dlref="60000000000000000103"/>
+      <deallife dldateclc="2026-06-02" dldayexp="0" dlamtexp="0.00" dlamtcur="0.00" dlamtpaym="0.00" dlamtlim="15000.00" dlflstatref="відкритий" dlflstat="1" dldpf="2070-05-10" dlds="2023-05-10" dlyear="2026" dlmonth="6" dlref="60000000000000000103"/>
+      <deallife dldateclc="2026-07-02" dldayexp="0" dlamtexp="0.00" dlamtcur="0.00" dlamtpaym="0.00" dlamtlim="15000.00" dlflstatref="закритий" dlflstat="2" dldff="2026-07-02" dldpf="2070-05-10" dlds="2023-05-10" dlyear="2026" dlmonth="7" dlref="60000000000000000103"/>
+    </crdeal>
+
+    <!-- 4 and 5. Two live МФО loans taken two months apart — the second branch
+         of mfo_pressure, which no real fixture reaches. -->
+    <crdeal dlrolesubref="Позичальник" dlrolesub="1" dldonornum="MFO3" dldonor="MFO" dlamt="6000.00"
+            dlcurrref="Українська гривня" dlcurr="980" dlporpogref="Кредит з одноразовим погашенням" dlporpog="1"
+            dlvidobesref="Без забезпечення (бланкові)" dlvidobes="90"
+            dlcelcredref="Договір позики" dlcelcred="10" inn="2101010101" dlref="60000000000000000104">
+      <deallife dldateclc="2026-06-03" dldayexp="0" dlamtexp="0.00" dlamtcur="3200.00" dlamtpaym="1500.00" dlamtlim="0.00" dlflstatref="відкритий" dlflstat="1" dldpf="2026-11-05" dlds="2026-05-05" dlyear="2026" dlmonth="6" dlref="60000000000000000104"/>
+      <deallife dldateclc="2026-07-03" dldayexp="0" dlamtexp="0.00" dlamtcur="3000.00" dlamtpaym="1500.00" dlamtlim="0.00" dlflstatref="відкритий" dlflstat="1" dldpf="2026-11-05" dlds="2026-05-05" dlyear="2026" dlmonth="7" dlref="60000000000000000104"/>
+    </crdeal>
+
+    <crdeal dlrolesubref="Позичальник" dlrolesub="1" dldonornum="MFO9" dldonor="MFO" dlamt="4000.00"
+            dlcurrref="Українська гривня" dlcurr="980" dlporpogref="Кредит з одноразовим погашенням" dlporpog="1"
+            dlvidobesref="Без забезпечення (бланкові)" dlvidobes="90"
+            dlcelcredref="Договір позики" dlcelcred="10" inn="2101010101" dlref="60000000000000000105">
+      <deallife dldateclc="2026-07-03" dldayexp="0" dlamtexp="0.00" dlamtcur="2500.00" dlamtpaym="1200.00" dlamtlim="0.00" dlflstatref="відкритий" dlflstat="1" dldpf="2026-12-12" dlds="2026-06-12" dlyear="2026" dlmonth="7" dlref="60000000000000000105"/>
+    </crdeal>
+  </comp>
+
+  <comp id="3" descr="Інформація про виконавчі провадження СКІ">
+    <penaltiesCount totalCount="0" activeCount="0"/>
+  </comp>
+
+  <comp id="4" descr="Реєстр запитів">
+    <credres org="OWN" reqreasonref="Заявка на кредит" reqreason="2" resultref="Звіт надано успішно" result="1" inn="2101010101" redate="2026-07-08" retime="09:12:01" typereport="4" typereportref="Кредитний рейтинг/Скоринг"/>
+    <credres org="BNK" reqreasonref="Заявка на кредит" reqreason="2" resultref="Звіт надано успішно" result="1" inn="2101010101" redate="2026-06-20" retime="11:04:22" typereport="2" typereportref="Кредитна історія"/>
+    <credres org="MFO" reqreasonref="Заявка на кредит" reqreason="2" resultref="Звіт надано успішно" result="1" inn="2101010101" redate="2026-06-12" retime="08:41:09" typereport="2" typereportref="Кредитна історія"/>
+    <credres org="MFO" reqreasonref="Заявка на кредит онлайн" reqreason="4" resultref="Звіт надано успішно" result="1" inn="2101010101" redate="2026-05-05" retime="19:55:37" typereport="2" typereportref="Кредитна історія"/>
+    <credres org="MFO" reqreasonref="Верифікація" reqreason="6" resultref="Звіт надано успішно" result="1" inn="2101010101" redate="2026-05-04" retime="19:50:02" typereport="1" typereportref="Ідентифікація"/>
+    <credres org="BNK" reqreasonref="На Розрахунок кредитного ліміту" reqreason="8" resultref="Звіт надано успішно" result="1" inn="2101010101" redate="2026-04-01" retime="10:00:00" typereport="2" typereportref="Кредитна історія"/>
+    <credres org="BNK" reqreasonref="Заявка на кредит" reqreason="2" resultref="Звіт надано успішно" result="1" inn="2101010101" redate="2025-11-01" retime="09:15:44" typereport="2" typereportref="Кредитна історія"/>
+    <reestrtime hr="0" da="1" wk="1" mn="2" qw="4" ye="6" yu="0"/>
+  </comp>
+
+  <comp id="6" descr="Моніторинг (не впливає на кредитний рейтинг)">
+    <moncredres org="BNK" resultref="Звіт надано успішно" result="1" monid="M0000000000000601" inn="2101010101" startdate="2025-02-10" enddate="2026-12-31"/>
+    <moncredres org="MFO" resultref="Звіт надано успішно" result="1" monid="M0000000000000602" inn="2101010101" startdate="2024-08-01" enddate="2025-08-01"/>
+    <moncredres org="BCH" resultref="Звіт надано успішно" result="1" monid="M0000000000000603" inn="2101010101" startdate="2023-03-15" enddate="2024-03-15"/>
+  </comp>
+
+  <comp id="17" descr="Розшук">
+    <wantedsbu found="0" foundref="Інформація не знайдена"/>
+    <wantedterrorist found="0" foundref="Інформація не знайдена"/>
+  </comp>
+
+  <comp id="40" descr="Інформація із санкційних списків">
+    <sanctions found="0" foundRef="Інформація не знайдена" typeSearch="-1"/>
+  </comp>
+
+  <comp id="54" descr="Інформація щодо банкрутства">
+    <bankruptcyinfo found="0" foundref="Не знайдена інформація про банкрутство"/>
+  </comp>
+
+  <comp id="76" descr="Інформація з Реєстру осіб, яким обмежено доступ до гральних закладів">
+    <ludomans found="0" foundref="Не знайдено у реєстрі лудоманів"/>
+  </comp>
+
+  <comp id="78" descr="Зведена аналітика кредитної історії">
+    <!-- The bureau counts the card as closed; indicator 6 deliberately does not.
+         Only totalOblPay is ever read from this block. -->
+    <creditSummary totalDeals="5" totalOpenDeals="4" totalClosedDeals="1" newDealsMonth="0" dealsExpPay="2"
+                   dealsExpNow="2" dealsClosedEarl="0" dealsExpYear="2" totalCreditAmount="58000.00"
+                   totalCurDebt="7600.00" totalExpNow="17.40" totalOblPay="3950.00" totalOpenLimits="15000.00"/>
+  </comp>
+</ubkidata>

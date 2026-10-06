@@ -1,0 +1,297 @@
+openapi: 3.0.3
+info:
+  title: СФактор rating engine
+  version: 1.0.0
+  description: |
+    Calculates a financial-health rating from a УБКІ credit report and optional
+    verified monthly income. The response follows the types in rating/result.go
+    and includes the values and display text used by the СФактор app.
+
+    Authentication and rate limiting must be provided by the gateway.
+    All responses include `Cache-Control: no-store`.
+servers:
+  - url: http://localhost:8080
+paths:
+  /rating:
+    post:
+      operationId: rate
+      summary: Rate a УБКІ report
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [report]
+              additionalProperties: false
+              properties:
+                report:
+                  type: string
+                  format: binary
+                  description: The УБКІ XML report, template 10, UTF-8.
+                monthly_income:
+                  type: string
+                  example: '25000.50'
+                  description: |
+                    Verified monthly income in decimal hryvnias, rounded to the
+                    nearest kopiyka. Omitted, empty or zero values use declared
+                    income from the report if it is no more than 12 months old
+                    (`income_source: ubki`). Otherwise, debt load is unmeasured
+                    and excluded from weight normalization.
+                as_of:
+                  type: string
+                  format: date
+                  example: '2026-07-08'
+                  description: |
+                    Reference date in YYYY-MM-DD format. Defaults to the report
+                    build date, or today if that date is unavailable. Dates before
+                    the report build date return 400; later dates are accepted.
+            encoding:
+              report:
+                contentType: application/xml, text/xml, application/octet-stream
+      responses:
+        '200':
+          description: Calculated rating and indicator details.
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+                enum: [no-store]
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rating'
+        '400':
+          description: |
+            `invalid_request`: malformed multipart; an unknown or repeated part;
+            a bad `monthly_income` or `as_of` (the message names it); an
+            `as_of` before the report was built.
+            `missing_report`: no `report` part, or an empty one.
+            `invalid_report`: the report is not УБКІ XML.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '405':
+          description: '`method_not_allowed`: any method but POST and OPTIONS.'
+          headers:
+            Allow:
+              schema:
+                type: string
+                enum: ['POST, OPTIONS']
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '413':
+          description: '`report_too_large`: the request body exceeds 4 MiB.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '415':
+          description: '`unsupported_media_type`: the body is not multipart/form-data.'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    options:
+      operationId: ratePreflight
+      summary: CORS preflight
+      description: Accepts preflight requests from the origin configured with `-cors-origin`.
+      responses:
+        '204':
+          description: Preflight accepted.
+  /health:
+    get:
+      operationId: health
+      summary: Liveness
+      responses:
+        '200':
+          description: The server is running.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status]
+                properties:
+                  status:
+                    type: string
+                    enum: [ok]
+components:
+  schemas:
+    Rating:
+      type: object
+      required: [available, as_of, score, raw, band, band_label, parameters]
+      properties:
+        available:
+          type: boolean
+          description: False when there are no eligible credit deals.
+        reason:
+          type: string
+          enum: [no_credit_history]
+          description: Reason for an unavailable rating; omitted when available.
+        as_of:
+          type: string
+          format: date
+          description: The reference date.
+        score:
+          type: integer
+          minimum: 0
+          maximum: 100
+          description: Final score after caps; zero when unavailable.
+        raw:
+          type: number
+          description: Sum of indicator contributions before caps.
+        band:
+          type: string
+          enum: [high, medium, low]
+          description: 75–100 high, 46–74 medium, 0–45 low.
+        band_label:
+          type: string
+          example: Високий
+        capped:
+          type: boolean
+          description: Present and true only when a cap reduced the score.
+        cap_reason:
+          type: string
+          enum: [current_overdue, terminal_debt, terminal_debt_aged]
+        income_source:
+          type: string
+          enum: [profile, ubki]
+          description: Income source used for debt load; omitted when debt load is unmeasured.
+        flags:
+          type: array
+          description: Credit-history flags that do not affect the score.
+          items:
+            type: string
+            enum: [write_off, sold, enforcement, mfo_pressure]
+        mfo:
+          $ref: '#/components/schemas/MFOProfile'
+        monitoring:
+          type: array
+          description: All monitoring subscriptions, including expired ones, sorted by start date descending.
+          items:
+            $ref: '#/components/schemas/MonitoringEntry'
+        parameters:
+          type: array
+          description: The nine indicators in display order. Empty when unavailable.
+          items:
+            $ref: '#/components/schemas/Parameter'
+    Parameter:
+      type: object
+      required: [key, order, title, value, display, level, points, weight, contribution, bands, hint]
+      properties:
+        key:
+          type: string
+          enum:
+            - history_age
+            - clean_streak
+            - overdue_deals
+            - overdue_amount
+            - active_deals
+            - closed_deals
+            - new_deals_6m
+            - debt_load
+            - inquiries_6m
+        order:
+          type: integer
+          minimum: 1
+          maximum: 9
+        title:
+          type: string
+        value:
+          type: number
+          description: Measured value rounded to one decimal place; ignore when level is unknown.
+        display:
+          type: string
+          description: Formatted value for display; empty when level is unknown.
+        level:
+          type: string
+          enum: [good, medium, bad, unknown]
+          description: Level determined by value bands; unknown when unmeasured.
+        points:
+          type: number
+          minimum: 0
+          maximum: 100
+        weight:
+          type: integer
+          description: Configured percentage weight. The nine weights sum to 100.
+        contribution:
+          type: number
+          description: Points multiplied by weight and divided by total measured weight, rounded to one decimal place. Contributions sum to raw.
+        bands:
+          $ref: '#/components/schemas/Bands'
+        hint:
+          type: string
+        advice:
+          type: string
+          description: Suggested action; omitted for good or unmeasured indicators.
+    Bands:
+      type: object
+      required: [bad, medium, good]
+      description: Display ranges for the bad, medium and good levels.
+      properties:
+        bad:
+          type: string
+        medium:
+          type: string
+        good:
+          type: string
+    MFOProfile:
+      type: object
+      description: Loan and application counts by lender type (BNK, MFO, FIN). These do not affect the score.
+      required: [deals_by_donor, active_by_donor, inquiries_by_org, active_mfo_deals, inquiries_6m]
+      properties:
+        deals_by_donor:
+          type: object
+          additionalProperties:
+            type: integer
+        active_by_donor:
+          type: object
+          additionalProperties:
+            type: integer
+        inquiries_by_org:
+          type: object
+          description: Credit applications in the recent window, excluding OWN requests.
+          additionalProperties:
+            type: integer
+        active_mfo_deals:
+          type: integer
+        inquiries_6m:
+          type: integer
+          description: Same count as the inquiries_6m indicator.
+    MonitoringEntry:
+      type: object
+      required: [org, org_label, start_date, end_date, active]
+      properties:
+        org:
+          type: string
+        org_label:
+          type: string
+          example: Банк
+        start_date:
+          type: string
+          description: YYYY-MM-DD, or empty when unknown.
+        end_date:
+          type: string
+          description: YYYY-MM-DD, or empty when unknown.
+        active:
+          type: boolean
+          description: Whether the subscription is active on as_of.
+    Error:
+      type: object
+      required: [error, message]
+      properties:
+        error:
+          type: string
+          enum:
+            - invalid_request
+            - missing_report
+            - invalid_report
+            - method_not_allowed
+            - report_too_large
+            - unsupported_media_type
+        message:
+          type: string
+          description: English error description without report contents.

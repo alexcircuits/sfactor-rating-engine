@@ -1,0 +1,244 @@
+{
+  "available": true,
+  "as_of": "2026-07-08",
+  "score": 62,
+  "raw": 61.8,
+  "band": "medium",
+  "band_label": "Середній",
+  "income_source": "ubki",
+  "flags": [
+    "enforcement"
+  ],
+  "mfo": {
+    "deals_by_donor": {
+      "BNK": 2
+    },
+    "active_by_donor": {
+      "BNK": 2
+    },
+    "inquiries_by_org": {
+      "BNK": 8,
+      "FIN": 1
+    },
+    "active_mfo_deals": 0,
+    "inquiries_6m": 9
+  },
+  "monitoring": [
+    {
+      "org": "BNK",
+      "org_label": "Банк",
+      "start_date": "2026-02-03",
+      "end_date": "2026-02-03",
+      "active": false
+    },
+    {
+      "org": "MFO",
+      "org_label": "МФО",
+      "start_date": "2026-01-27",
+      "end_date": "2026-01-27",
+      "active": false
+    },
+    {
+      "org": "FIN",
+      "org_label": "Фінкомпанія",
+      "start_date": "2025-05-05",
+      "end_date": "2026-05-28",
+      "active": false
+    },
+    {
+      "org": "BCH",
+      "org_label": "Бюро",
+      "start_date": "2024-12-27",
+      "end_date": "2024-12-27",
+      "active": false
+    },
+    {
+      "org": "BNK",
+      "org_label": "Банк",
+      "start_date": "2024-09-24",
+      "end_date": "2024-09-24",
+      "active": false
+    },
+    {
+      "org": "FIN",
+      "org_label": "Фінкомпанія",
+      "start_date": "2024-06-04",
+      "end_date": "2026-01-07",
+      "active": false
+    },
+    {
+      "org": "MFO",
+      "org_label": "МФО",
+      "start_date": "2024-05-05",
+      "end_date": "2024-05-05",
+      "active": false
+    },
+    {
+      "org": "MFO",
+      "org_label": "МФО",
+      "start_date": "2022-10-07",
+      "end_date": "2025-07-24",
+      "active": false
+    }
+  ],
+  "parameters": [
+    {
+      "key": "history_age",
+      "order": 1,
+      "title": "Вік кредитної історії",
+      "value": 113,
+      "display": "3 місяці (113 днів)",
+      "level": "bad",
+      "points": 20.7,
+      "weight": 8,
+      "contribution": 1.7,
+      "bands": {
+        "bad": "0–180 днів",
+        "medium": "181–360 днів",
+        "good": "більше 360 днів"
+      },
+      "hint": "Що довша історія, то більше довіри з боку кредиторів.",
+      "advice": "Цей показник зростає сам із часом — його не можна прискорити, тільки не переривати."
+    },
+    {
+      "key": "clean_streak",
+      "order": 2,
+      "title": "Платежі без прострочень",
+      "value": 113,
+      "display": "3 місяці (113 днів)",
+      "level": "medium",
+      "points": 41.4,
+      "weight": 18,
+      "contribution": 7.5,
+      "bands": {
+        "bad": "0–90 днів",
+        "medium": "91–180 днів",
+        "good": "більше 180 днів"
+      },
+      "hint": "Найсильніший сигнал: скільки днів поспіль ви платите вчасно.",
+      "advice": "Ви вже близько: після 180 днів поспіль без прострочень показник стане зеленим."
+    },
+    {
+      "key": "overdue_deals",
+      "order": 3,
+      "title": "Поточні прострочені кредити",
+      "value": 0,
+      "display": "0 кредитів",
+      "level": "good",
+      "points": 100,
+      "weight": 15,
+      "contribution": 15,
+      "bands": {
+        "bad": "2 і більше",
+        "medium": "1",
+        "good": "0"
+      },
+      "hint": "Кожен прострочений кредит бачить будь-який кредитор."
+    },
+    {
+      "key": "overdue_amount",
+      "order": 4,
+      "title": "Сума поточного прострочення",
+      "value": 0,
+      "display": "0 ₴",
+      "level": "good",
+      "points": 100,
+      "weight": 12,
+      "contribution": 12,
+      "bands": {
+        "bad": "більше 1000 ₴",
+        "medium": "100–1000 ₴",
+        "good": "менше 100 ₴"
+      },
+      "hint": "Навіть невелика прострочена сума псує всю картину."
+    },
+    {
+      "key": "active_deals",
+      "order": 5,
+      "title": "Діючі кредити",
+      "value": 2,
+      "display": "2 кредити",
+      "level": "good",
+      "points": 70,
+      "weight": 10,
+      "contribution": 7,
+      "bands": {
+        "bad": "більше 5",
+        "medium": "3–5",
+        "good": "менше 3"
+      },
+      "hint": "Багато кредитів одночасно — це високе навантаження на бюджет."
+    },
+    {
+      "key": "closed_deals",
+      "order": 6,
+      "title": "Погашені кредити",
+      "value": 0,
+      "display": "0 кредитів",
+      "level": "bad",
+      "points": 0,
+      "weight": 7,
+      "contribution": 0,
+      "bands": {
+        "bad": "0",
+        "medium": "1–3",
+        "good": "більше 3"
+      },
+      "hint": "Закриті кредити доводять, що ви повертаєте борги.",
+      "advice": "У вас ще немає повністю погашених кредитів. Перший закритий кредит помітно підніме рейтинг."
+    },
+    {
+      "key": "new_deals_6m",
+      "order": 7,
+      "title": "Нові кредити за 6 місяців",
+      "value": 2,
+      "display": "2 кредити",
+      "level": "good",
+      "points": 70,
+      "weight": 8,
+      "contribution": 5.6,
+      "bands": {
+        "bad": "більше 5",
+        "medium": "3–5",
+        "good": "менше 3"
+      },
+      "hint": "Кілька нових кредитів поспіль читаються як фінансовий стрес."
+    },
+    {
+      "key": "debt_load",
+      "order": 8,
+      "title": "Кредитне навантаження",
+      "value": 33,
+      "display": "33%",
+      "level": "medium",
+      "points": 63.7,
+      "weight": 12,
+      "contribution": 7.6,
+      "bands": {
+        "bad": "більше 60%",
+        "medium": "30–60%",
+        "good": "менше 30%"
+      },
+      "hint": "Скільки з вашого доходу вже забирають щомісячні платежі.",
+      "advice": "Навантаження помітне. Дострокове погашення навіть невеликої суми зменшить щомісячний платіж."
+    },
+    {
+      "key": "inquiries_6m",
+      "order": 9,
+      "title": "Звернення за кредитами",
+      "value": 9,
+      "display": "9 звернень",
+      "level": "medium",
+      "points": 53.8,
+      "weight": 10,
+      "contribution": 5.4,
+      "bands": {
+        "bad": "більше 15",
+        "medium": "5–15",
+        "good": "менше 5"
+      },
+      "hint": "Часті заявки на кредит виглядають як пошук грошей будь-де.",
+      "advice": "Не подавайте заявки «про всяк випадок» — кожна з них видима кредиторам протягом 6 місяців."
+    }
+  ]
+}

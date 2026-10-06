@@ -1,0 +1,207 @@
+{
+  "available": true,
+  "as_of": "2026-07-08",
+  "score": 80,
+  "raw": 80.2,
+  "band": "high",
+  "band_label": "Високий",
+  "flags": [
+    "mfo_pressure"
+  ],
+  "mfo": {
+    "deals_by_donor": {
+      "BNK": 3,
+      "MFO": 2
+    },
+    "active_by_donor": {
+      "BNK": 3,
+      "MFO": 2
+    },
+    "inquiries_by_org": {
+      "BNK": 1,
+      "MFO": 2
+    },
+    "active_mfo_deals": 2,
+    "inquiries_6m": 3
+  },
+  "monitoring": [
+    {
+      "org": "BNK",
+      "org_label": "Банк",
+      "start_date": "2025-02-10",
+      "end_date": "2026-12-31",
+      "active": true
+    },
+    {
+      "org": "MFO",
+      "org_label": "МФО",
+      "start_date": "2024-08-01",
+      "end_date": "2025-08-01",
+      "active": false
+    },
+    {
+      "org": "BCH",
+      "org_label": "Бюро",
+      "start_date": "2023-03-15",
+      "end_date": "2024-03-15",
+      "active": false
+    }
+  ],
+  "parameters": [
+    {
+      "key": "history_age",
+      "order": 1,
+      "title": "Вік кредитної історії",
+      "value": 1155,
+      "display": "3 роки (1155 днів)",
+      "level": "good",
+      "points": 100,
+      "weight": 8,
+      "contribution": 9.1,
+      "bands": {
+        "bad": "0–180 днів",
+        "medium": "181–360 днів",
+        "good": "більше 360 днів"
+      },
+      "hint": "Що довша історія, то більше довіри з боку кредиторів."
+    },
+    {
+      "key": "clean_streak",
+      "order": 2,
+      "title": "Платежі без прострочень",
+      "value": 1155,
+      "display": "3 роки (1155 днів)",
+      "level": "good",
+      "points": 100,
+      "weight": 18,
+      "contribution": 20.5,
+      "bands": {
+        "bad": "0–90 днів",
+        "medium": "91–180 днів",
+        "good": "більше 180 днів"
+      },
+      "hint": "Найсильніший сигнал: скільки днів поспіль ви платите вчасно."
+    },
+    {
+      "key": "overdue_deals",
+      "order": 3,
+      "title": "Поточні прострочені кредити",
+      "value": 0,
+      "display": "0 кредитів",
+      "level": "good",
+      "points": 100,
+      "weight": 15,
+      "contribution": 17,
+      "bands": {
+        "bad": "2 і більше",
+        "medium": "1",
+        "good": "0"
+      },
+      "hint": "Кожен прострочений кредит бачить будь-який кредитор."
+    },
+    {
+      "key": "overdue_amount",
+      "order": 4,
+      "title": "Сума поточного прострочення",
+      "value": 0,
+      "display": "0 ₴",
+      "level": "good",
+      "points": 100,
+      "weight": 12,
+      "contribution": 13.6,
+      "bands": {
+        "bad": "більше 1000 ₴",
+        "medium": "100–1000 ₴",
+        "good": "менше 100 ₴"
+      },
+      "hint": "Навіть невелика прострочена сума псує всю картину."
+    },
+    {
+      "key": "active_deals",
+      "order": 5,
+      "title": "Діючі кредити",
+      "value": 5,
+      "display": "5 кредитів",
+      "level": "medium",
+      "points": 40,
+      "weight": 10,
+      "contribution": 4.5,
+      "bands": {
+        "bad": "більше 5",
+        "medium": "3–5",
+        "good": "менше 3"
+      },
+      "hint": "Багато кредитів одночасно — це високе навантаження на бюджет.",
+      "advice": "Не беріть новий кредит, поки не закриєте хоча б один із діючих."
+    },
+    {
+      "key": "closed_deals",
+      "order": 6,
+      "title": "Погашені кредити",
+      "value": 0,
+      "display": "0 кредитів",
+      "level": "bad",
+      "points": 0,
+      "weight": 7,
+      "contribution": 0,
+      "bands": {
+        "bad": "0",
+        "medium": "1–3",
+        "good": "більше 3"
+      },
+      "hint": "Закриті кредити доводять, що ви повертаєте борги.",
+      "advice": "У вас ще немає повністю погашених кредитів. Перший закритий кредит помітно підніме рейтинг."
+    },
+    {
+      "key": "new_deals_6m",
+      "order": 7,
+      "title": "Нові кредити за 6 місяців",
+      "value": 2,
+      "display": "2 кредити",
+      "level": "good",
+      "points": 70,
+      "weight": 8,
+      "contribution": 6.4,
+      "bands": {
+        "bad": "більше 5",
+        "medium": "3–5",
+        "good": "менше 3"
+      },
+      "hint": "Кілька нових кредитів поспіль читаються як фінансовий стрес."
+    },
+    {
+      "key": "debt_load",
+      "order": 8,
+      "title": "Кредитне навантаження",
+      "value": 0,
+      "display": "",
+      "level": "unknown",
+      "points": 0,
+      "weight": 12,
+      "contribution": 0,
+      "bands": {
+        "bad": "більше 60%",
+        "medium": "30–60%",
+        "good": "менше 30%"
+      },
+      "hint": "Скільки з вашого доходу вже забирають щомісячні платежі."
+    },
+    {
+      "key": "inquiries_6m",
+      "order": 9,
+      "title": "Звернення за кредитами",
+      "value": 3,
+      "display": "3 звернення",
+      "level": "good",
+      "points": 80.2,
+      "weight": 10,
+      "contribution": 9.1,
+      "bands": {
+        "bad": "більше 15",
+        "medium": "5–15",
+        "good": "менше 5"
+      },
+      "hint": "Часті заявки на кредит виглядають як пошук грошей будь-де."
+    }
+  ]
+}

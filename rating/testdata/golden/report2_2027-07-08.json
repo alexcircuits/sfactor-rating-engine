@@ -1,0 +1,235 @@
+{
+  "available": true,
+  "as_of": "2027-07-08",
+  "score": 45,
+  "raw": 52,
+  "band": "low",
+  "band_label": "Низький",
+  "capped": true,
+  "cap_reason": "current_overdue",
+  "flags": [
+    "sold",
+    "enforcement"
+  ],
+  "mfo": {
+    "deals_by_donor": {
+      "BNK": 1
+    },
+    "active_by_donor": {
+      "BNK": 1
+    },
+    "inquiries_by_org": {},
+    "active_mfo_deals": 0,
+    "inquiries_6m": 0
+  },
+  "monitoring": [
+    {
+      "org": "FIN",
+      "org_label": "Фінкомпанія",
+      "start_date": "2025-11-10",
+      "end_date": "2026-07-06",
+      "active": false
+    },
+    {
+      "org": "BNK",
+      "org_label": "Банк",
+      "start_date": "2024-09-19",
+      "end_date": "2024-09-19",
+      "active": false
+    },
+    {
+      "org": "BNK",
+      "org_label": "Банк",
+      "start_date": "2024-07-31",
+      "end_date": "2024-07-31",
+      "active": false
+    },
+    {
+      "org": "BCH",
+      "org_label": "Бюро",
+      "start_date": "2024-07-23",
+      "end_date": "2024-07-23",
+      "active": false
+    },
+    {
+      "org": "BNK",
+      "org_label": "Банк",
+      "start_date": "2024-07-15",
+      "end_date": "2024-07-15",
+      "active": false
+    },
+    {
+      "org": "MFO",
+      "org_label": "МФО",
+      "start_date": "2024-05-05",
+      "end_date": "2024-10-05",
+      "active": false
+    },
+    {
+      "org": "BNK",
+      "org_label": "Банк",
+      "start_date": "2023-07-27",
+      "end_date": "2026-06-10",
+      "active": false
+    }
+  ],
+  "parameters": [
+    {
+      "key": "history_age",
+      "order": 1,
+      "title": "Вік кредитної історії",
+      "value": 1010,
+      "display": "2 роки (1010 днів)",
+      "level": "good",
+      "points": 96.1,
+      "weight": 8,
+      "contribution": 8.7,
+      "bands": {
+        "bad": "0–180 днів",
+        "medium": "181–360 днів",
+        "good": "більше 360 днів"
+      },
+      "hint": "Що довша історія, то більше довіри з боку кредиторів."
+    },
+    {
+      "key": "clean_streak",
+      "order": 2,
+      "title": "Платежі без прострочень",
+      "value": 0,
+      "display": "0 днів",
+      "level": "bad",
+      "points": 0,
+      "weight": 18,
+      "contribution": 0,
+      "bands": {
+        "bad": "0–90 днів",
+        "medium": "91–180 днів",
+        "good": "більше 180 днів"
+      },
+      "hint": "Найсильніший сигнал: скільки днів поспіль ви платите вчасно.",
+      "advice": "Кожен вчасний платіж подовжує серію. Три місяці поспіль без прострочень — і показник стане жовтим."
+    },
+    {
+      "key": "overdue_deals",
+      "order": 3,
+      "title": "Поточні прострочені кредити",
+      "value": 1,
+      "display": "1 кредит",
+      "level": "medium",
+      "points": 50,
+      "weight": 15,
+      "contribution": 8.5,
+      "bands": {
+        "bad": "2 і більше",
+        "medium": "1",
+        "good": "0"
+      },
+      "hint": "Кожен прострочений кредит бачить будь-який кредитор.",
+      "advice": "Погасіть прострочені кредити — це найшвидший спосіб підняти рейтинг."
+    },
+    {
+      "key": "overdue_amount",
+      "order": 4,
+      "title": "Сума поточного прострочення",
+      "value": 1034.6,
+      "display": "1 035 ₴",
+      "level": "bad",
+      "points": 33.9,
+      "weight": 12,
+      "contribution": 4.6,
+      "bands": {
+        "bad": "більше 1000 ₴",
+        "medium": "100–1000 ₴",
+        "good": "менше 100 ₴"
+      },
+      "hint": "Навіть невелика прострочена сума псує всю картину.",
+      "advice": "Внесіть прострочену суму. Щойно залишок стане меншим за 100 ₴, показник позеленіє."
+    },
+    {
+      "key": "active_deals",
+      "order": 5,
+      "title": "Діючі кредити",
+      "value": 1,
+      "display": "1 кредит",
+      "level": "good",
+      "points": 85,
+      "weight": 10,
+      "contribution": 9.7,
+      "bands": {
+        "bad": "більше 5",
+        "medium": "3–5",
+        "good": "менше 3"
+      },
+      "hint": "Багато кредитів одночасно — це високе навантаження на бюджет."
+    },
+    {
+      "key": "closed_deals",
+      "order": 6,
+      "title": "Погашені кредити",
+      "value": 0,
+      "display": "0 кредитів",
+      "level": "bad",
+      "points": 0,
+      "weight": 7,
+      "contribution": 0,
+      "bands": {
+        "bad": "0",
+        "medium": "1–3",
+        "good": "більше 3"
+      },
+      "hint": "Закриті кредити доводять, що ви повертаєте борги.",
+      "advice": "У вас ще немає повністю погашених кредитів. Перший закритий кредит помітно підніме рейтинг."
+    },
+    {
+      "key": "new_deals_6m",
+      "order": 7,
+      "title": "Нові кредити за 6 місяців",
+      "value": 0,
+      "display": "0 кредитів",
+      "level": "good",
+      "points": 100,
+      "weight": 8,
+      "contribution": 9.1,
+      "bands": {
+        "bad": "більше 5",
+        "medium": "3–5",
+        "good": "менше 3"
+      },
+      "hint": "Кілька нових кредитів поспіль читаються як фінансовий стрес."
+    },
+    {
+      "key": "debt_load",
+      "order": 8,
+      "title": "Кредитне навантаження",
+      "value": 0,
+      "display": "",
+      "level": "unknown",
+      "points": 0,
+      "weight": 12,
+      "contribution": 0,
+      "bands": {
+        "bad": "більше 60%",
+        "medium": "30–60%",
+        "good": "менше 30%"
+      },
+      "hint": "Скільки з вашого доходу вже забирають щомісячні платежі."
+    },
+    {
+      "key": "inquiries_6m",
+      "order": 9,
+      "title": "Звернення за кредитами",
+      "value": 0,
+      "display": "0 звернень",
+      "level": "good",
+      "points": 100,
+      "weight": 10,
+      "contribution": 11.4,
+      "bands": {
+        "bad": "більше 15",
+        "medium": "5–15",
+        "good": "менше 5"
+      },
+      "hint": "Часті заявки на кредит виглядають як пошук грошей будь-де."
+    }
+  ]
+}
